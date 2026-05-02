@@ -1,0 +1,24 @@
+{
+  "intents": [
+    {
+      "tag": "greeting",
+      "patterns": ["hi", "hello", "hey", "good morning", "is anyone there"],
+      "responses": ["Hello! I am CeylonGuide, your AI travel assistant. How can I help you today?", "Ayubowan! Ready to explore Sri Lanka? Ask me about train routes or local spots!"]
+    },
+    {
+      "tag": "goodbye",
+      "patterns": ["bye", "see you later", "goodbye", "thanks", "thank you"],
+      "responses": ["Safe travels! Let me know if you need more help later.", "You're welcome! Enjoy your trip in Sri Lanka!"]
+    },
+    {
+      "tag": "beaches",
+      "patterns": ["what is the best beach", "surfing", "where to swim", "recommend a beach", "coastal"],
+      "responses": ["For surfing, Arugam Bay and Weligama are world-class! If you want relaxing vibes and turtles, check out Mirissa and Unawatuna."]
+    },
+    {
+      "tag": "food",
+      "patterns": ["hungry", "where to eat", "local food", "best restaurant", "kottu"],
+      "responses": ["You must try authentic Kottu Roti! If you are in Colombo, Galle Face Green has amazing street food. In local cafes, always ask for Rice and Curry!"]
+    }
+  ]
+}
