@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CeylonGuide AI | Travel Sri Lanka</title>
+    <!-- Google Fonts for a sleek modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Phosphor Icons for modern SVG icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">Ceylon<span>Guide</span></div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#destinations">Destinations</a></li>
+                <li><a href="/admin/login" class="admin-nav-btn"><i class="ph ph-lock-key"></i> Admin Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="fade-in-up">Discover the Wonder of <br> Sri Lanka</h1>
+            <p class="fade-in-up delay-1">Your intelligent AI travel companion. Seamlessly plan routes, find hidden gems, and experience paradise.</p>
+            <button class="cta-btn fade-in-up delay-2" onclick="toggleChat()">Start Chatting Now</button>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+        <div class="section-header">
+            <h2>Why Travel With Us?</h2>
+            <p>Experience the ultimate convenience with our AI-powered travel tools.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="ph ph-train feature-icon"></i>
+                <h3>Smart Transit Planner</h3>
+                <p>Find the best bus and train routes, estimated times, and prices instantly.</p>
+            </div>
+            <div class="feature-card">
+                <i class="ph ph-map-pin feature-icon"></i>
+                <h3>Hidden Gems</h3>
+                <p>Get AI-curated recommendations for off-the-beaten-path locations.</p>
+            </div>
+            <div class="feature-card">
+                <i class="ph ph-headset feature-icon"></i>
+                <h3>24/7 AI Assistance</h3>
+                <p>Ask anything, anytime. Our AI learns and adapts to give you the best answers.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Destinations Section -->
+    <section id="destinations" class="destinations-section">
+        <div class="section-header">
+            <h2>Popular Destinations</h2>
+        </div>
+        <div class="destinations-grid">
+            <div class="dest-card" style="background-image: url('https://images.unsplash.com/photo-1588615419955-af569df5d233?auto=format&fit=crop&w=600&q=80');">
+                <div class="dest-info">
+                    <h3>Sigiriya</h3>
+                    <p>The Ancient Rock Fortress</p>
+                </div>
+            </div>
+            <div class="dest-card" style="background-image: url('https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&w=600&q=80');">
+                <div class="dest-info">
+                    <h3>Ella</h3>
+                    <p>Breathtaking Train Rides</p>
+                </div>
+            </div>
+            <div class="dest-card" style="background-image: url('https://images.unsplash.com/photo-1586520556272-d59c6d3df39c?auto=format&fit=crop&w=600&q=80');">
+                <div class="dest-info">
+                    <h3>Mirissa</h3>
+                    <p>Pristine Southern Beaches</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 CeylonGuide AI. Built with ❤️ for Sri Lanka.</p>
+    </footer>
+
+    <!-- Floating Chat Widget -->
+    <button id="chat-fab" class="chat-fab" onclick="toggleChat()">
+        <i class="ph-fill ph-chat-teardrop-dots"></i>
+    </button>
+
+    <div id="chat-container" class="glass-panel hidden">
+        <div id="header">
+            <div class="header-left">
+                <span class="status-dot"></span> 
+                <span class="bot-name">CeylonGuide AI</span>
+            </div>
+            <button class="close-btn" onclick="toggleChat()">
+                <i class="ph ph-x"></i>
+            </button>
+        </div>
+        <div id="chat-box">
+            <div class="msg bot-msg slide-in">Ayubowan! 🙏 I am CeylonGuide. How can I help you plan your trip today?</div>
+        </div>
+        <div id="input-area">
+            <input id="textInput" type="text" placeholder="Type a message..." onkeypress="handleEnter(event)">
+            <button id="sendBtn" onclick="sendMessage()">
+                <i class="ph-fill ph-paper-plane-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main JS -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
