@@ -1,26 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CeylonGuide AI | Travel Sri Lanka</title>
     <!-- Google Fonts for a sleek modern look -->
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet">
     <!-- Main CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <!-- Phosphor Icons for modern SVG icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
+
 <body>
 
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="logo">Ceylon<span>Guide</span></div>
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#destinations">Destinations</a></li>
+            <!-- Hamburger for mobile -->
+            <button class="nav-toggle" onclick="toggleNav()" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home" onclick="closeNav()">Home</a></li>
+                <li><a href="#features" onclick="closeNav()">Features</a></li>
+                <li><a href="#destinations" onclick="closeNav()">Destinations</a></li>
                 <li><a href="/admin/login" class="admin-nav-btn"><i class="ph ph-lock-key"></i> Admin Login</a></li>
             </ul>
         </div>
@@ -28,10 +36,15 @@
 
     <!-- Hero Section -->
     <section id="home" class="hero">
+        <!-- Video Background -->
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="{{ url_for('static', filename='hero.mp4') }}" type="video/mp4">
+        </video>
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <h1 class="fade-in-up">Discover the Wonder of <br> Sri Lanka</h1>
-            <p class="fade-in-up delay-1">Your intelligent AI travel companion. Seamlessly plan routes, find hidden gems, and experience paradise.</p>
+            <p class="fade-in-up delay-1">Your intelligent AI travel companion. Seamlessly plan routes, find hidden
+                gems, and experience paradise.</p>
             <button class="cta-btn fade-in-up delay-2" onclick="toggleChat()">Start Chatting Now</button>
         </div>
     </section>
@@ -67,19 +80,22 @@
             <h2>Popular Destinations</h2>
         </div>
         <div class="destinations-grid">
-            <div class="dest-card" style="background-image: url('https://images.unsplash.com/photo-1588615419955-af569df5d233?auto=format&fit=crop&w=600&q=80');">
+            <div class="dest-card"
+                style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/e/e6/Sigiriya_%28141688197%29.jpeg');">
                 <div class="dest-info">
                     <h3>Sigiriya</h3>
                     <p>The Ancient Rock Fortress</p>
                 </div>
             </div>
-            <div class="dest-card" style="background-image: url('https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&w=600&q=80');">
+            <div class="dest-card"
+                style="background-image: url('https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&w=600&q=80');">
                 <div class="dest-info">
                     <h3>Ella</h3>
                     <p>Breathtaking Train Rides</p>
                 </div>
             </div>
-            <div class="dest-card" style="background-image: url('https://images.unsplash.com/photo-1586520556272-d59c6d3df39c?auto=format&fit=crop&w=600&q=80');">
+            <div class="dest-card"
+                style="background-image: url('https://images.squarespace-cdn.com/content/v1/5a3bb03b4c326d76de73ddaa/1383f2a5-cd7b-4ded-8a16-508c8fca9790/The+Common+Wanderer-160.jpg');">
                 <div class="dest-info">
                     <h3>Mirissa</h3>
                     <p>Pristine Southern Beaches</p>
@@ -101,7 +117,7 @@
     <div id="chat-container" class="glass-panel hidden">
         <div id="header">
             <div class="header-left">
-                <span class="status-dot"></span> 
+                <span class="status-dot"></span>
                 <span class="bot-name">CeylonGuide AI</span>
             </div>
             <button class="close-btn" onclick="toggleChat()">
@@ -109,7 +125,8 @@
             </button>
         </div>
         <div id="chat-box">
-            <div class="msg bot-msg slide-in">Ayubowan! 🙏 I am CeylonGuide. How can I help you plan your trip today?</div>
+            <div class="msg bot-msg slide-in">Ayubowan! 🙏 I am CeylonGuide. How can I help you plan your trip today?
+            </div>
         </div>
         <div id="input-area">
             <input id="textInput" type="text" placeholder="Type a message..." onkeypress="handleEnter(event)">
@@ -122,4 +139,5 @@
     <!-- Main JS -->
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
+
 </html>
