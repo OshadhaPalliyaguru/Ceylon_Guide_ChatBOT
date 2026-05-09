@@ -34,9 +34,14 @@ def process_text(text):
 
 
 def get_keywords(text):
-    """Extract meaningful keywords by removing stop words."""
+    """Extract meaningful keywords by removing stop words.
+    Falls back to all tokens if filtering removes everything
+    (e.g. short phrases like 'how are you' are all stop words).
+    """
     tokens = process_text(text)
-    return set(word for word in tokens if word not in STOP_WORDS)
+    filtered = set(word for word in tokens if word not in STOP_WORDS)
+    # If all words were stop words, use the full token set as fallback
+    return filtered if filtered else set(tokens)
 
 
 def calculate_similarity(input_keywords, pattern_keywords):
@@ -57,19 +62,19 @@ class CeylonEngine:
         with open(intents_path, 'r') as f:
             self.intents = json.load(f)
 
-    def get_response(self, user_input, db):
+    def get_response(self, user_input, db, log=True):
         """
         3-Tier lookup :
           Tier 1: Static intents.json 
           Tier 2: learned_facts DB     
+          Tier 2.5: pending_reviews DB
           Tier 3: Learning mode        
         Returns: (response_text, is_learning_mode)
         """
-        # Check if it's a transit query first (bus/train routes)
         if self._is_transit_query(user_input):
             result = self._search_transit(user_input, db)
             if result:
-                db.log_chat(user_input, result)
+                if log: db.log_chat(user_input, result)
                 return result, False
 
         input_keywords = get_keywords(user_input)
@@ -87,7 +92,7 @@ class CeylonEngine:
 
         if best_score >= self.SIMILARITY_THRESHOLD and best_intent:
             response = random.choice(best_intent['responses'])
-            db.log_chat(user_input, response)
+            if log: db.log_chat(user_input, response)
             return response, False
 
         # --- Tier 2: Learned Facts from DB ---
@@ -102,8 +107,22 @@ class CeylonEngine:
                 best_fact_response = response
 
         if best_fact_score >= self.SIMILARITY_THRESHOLD and best_fact_response:
-            db.log_chat(user_input, best_fact_response)
+            if log: db.log_chat(user_input, best_fact_response)
             return best_fact_response, False
+
+        # --- Tier 2.5: Pending Reviews ---
+        all_pending = db.get_all_pending_reviews()
+        best_pending_score = 0.0
+        for pid, p_query, p_sugg in all_pending:
+            p_keywords = get_keywords(p_query)
+            score = calculate_similarity(input_keywords, p_keywords)
+            if score > best_pending_score:
+                best_pending_score = score
+        
+        if best_pending_score >= self.SIMILARITY_THRESHOLD:
+            response = "This question is currently under review by our admin team! I'll let you know once they approve an answer."
+            if log: db.log_chat(user_input, response)
+            return response, False
 
         # --- Tier 3: Learning Mode ---
         return (
