@@ -54,6 +54,29 @@ def get_bot_response():
 
 
 # ============================================================
+#  ROUTE 2.5: Polling Endpoint for Auto-Refresh
+# ============================================================
+@app.route("/check_approval")
+def check_approval():
+    user_text = request.args.get('msg', '').strip()
+    if not user_text:
+        return jsonify({"approved": False})
+
+    # Call the engine but DO NOT log this to the chat history
+    response, is_learning = engine.get_response(user_text, db, log=False)
+    
+    # If the response is the under-review message, it's still pending
+    if response == "This question is currently under review by our admin team! I'll let you know once they approve an answer.":
+        return jsonify({"approved": False})
+
+    # If it's not learning mode anymore, it means it's approved
+    if not is_learning:
+        return jsonify({"approved": True, "answer": response})
+        
+    return jsonify({"approved": False})
+
+
+# ============================================================
 #  ROUTE 3: Admin Login Page
 # ============================================================
 @app.route("/admin/login", methods=["GET", "POST"])
