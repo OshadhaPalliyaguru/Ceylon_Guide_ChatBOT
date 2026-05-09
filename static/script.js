@@ -1,3 +1,11 @@
+// --- Mobile Nav Toggle ---
+function toggleNav() {
+    document.getElementById("navLinks").classList.toggle("open");
+}
+function closeNav() {
+    document.getElementById("navLinks").classList.remove("open");
+}
+
 // --- Chat Widget Toggle Logic ---
 function toggleChat() {
     const chatContainer = document.getElementById("chat-container");
@@ -17,6 +25,27 @@ function toggleChat() {
 
 
 let isLearningMode = false;
+let pendingQuestionForPolling = "";
+let pollingInterval = null;
+
+function startPolling(question) {
+    if (pollingInterval) clearInterval(pollingInterval);
+    
+    pollingInterval = setInterval(() => {
+        fetch('/check_approval?msg=' + encodeURIComponent(question))
+            .then(res => res.json())
+            .then(data => {
+                if (data.approved) {
+                    clearInterval(pollingInterval);
+                    pollingInterval = null;
+                    let chatBox = document.getElementById("chat-box");
+                    appendMessage(chatBox, "🎉 Update: Admin approved your suggestion for '" + question + "'! \n\nThe answer is: " + data.answer, "bot-msg slide-in");
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }
+            })
+            .catch(err => console.error("Polling error:", err));
+    }, 5000);
+}
 
 // --- Messaging Logic ---
 function sendMessage() {
@@ -24,6 +53,10 @@ function sendMessage() {
     let rawText = textInput.value.trim();
 
     if (rawText === "") return;
+
+    if (!isLearningMode) {
+        pendingQuestionForPolling = rawText;
+    }
 
     let chatBox = document.getElementById("chat-box");
 
@@ -54,6 +87,7 @@ function sendMessage() {
               
                 if (data.includes("submitted for admin review")) {
                     appendMessage(chatBox, data, "bot-msg review-msg");
+                    startPolling(pendingQuestionForPolling);
                 } else {
                     appendMessage(chatBox, data, "bot-msg");
                 }
